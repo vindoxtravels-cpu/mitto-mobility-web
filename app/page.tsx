@@ -44,21 +44,41 @@ function Section({
   children: React.ReactNode;
 }): JSX.Element {
   const toneClass =
-    tone === "violet" ? "bg-violet-section" : tone === "soft" ? "bg-[var(--mitto-gray-50)]" : "";
+    tone === "violet" 
+      ? "bg-violet-section atlys-highlight" 
+      : tone === "soft" 
+        ? "bg-[var(--mitto-gray-50)]" 
+        : "";
 
   return (
-    <section id={id} className={`${toneClass} ${tone === "violet" ? "relative overflow-hidden" : ""}`}>
-      <div className="mx-auto max-w-7xl px-6 py-14 md:py-20">
+    <section id={id} className={`${toneClass} ${tone === "violet" ? "relative overflow-hidden" : ""} a-fade-up`}>
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 md:py-24">
         <div className="max-w-3xl">
-          {eyebrow && <p className="text-sm font-semibold text-[var(--mitto-primary-700)]">{eyebrow}</p>}
-          <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight text-[var(--mitto-gray-900)]">
+          {eyebrow && (
+            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--mitto-primary-50)] px-3 py-1 text-xs font-bold text-[var(--mitto-primary-700)] uppercase tracking-wider mb-4">
+              {eyebrow}
+            </div>
+          )}
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-[var(--mitto-gray-900)] leading-tight">
             {title}
           </h2>
-          {subtitle && <p className="mt-3 text-[15px] md:text-base text-[var(--mitto-gray-600)]">{subtitle}</p>}
+          {subtitle && <p className="mt-4 text-base md:text-lg text-[var(--mitto-gray-600)] leading-relaxed">{subtitle}</p>}
         </div>
-        <div className="mt-10">{children}</div>
+        <div className="mt-12">{children}</div>
       </div>
     </section>
+  );
+}
+
+function ProcessStep({ number, title, desc }: { number: string; title: string; desc: string }) {
+  return (
+    <div className="relative flex flex-col items-center text-center md:items-start md:text-left group">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-soft border border-[var(--mitto-gray-100)] text-xl font-bold text-[var(--mitto-primary-700)] group-hover:scale-110 transition-transform duration-300">
+        {number}
+      </div>
+      <h3 className="mt-6 text-xl font-semibold text-[var(--mitto-gray-900)]">{title}</h3>
+      <p className="mt-3 text-sm text-[var(--mitto-gray-600)] leading-relaxed">{desc}</p>
+    </div>
   );
 }
 
@@ -267,15 +287,14 @@ export default function HomePage(): JSX.Element {
       <RoadmapModal open={isRoadmapOpen} onClose={() => setIsRoadmapOpen(false)} />
 
       {/* HERO (clean: single primary CTA) */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden atlys-highlight">
         <div className="absolute inset-0 -z-10">
-          <div className="atlys-blob absolute -top-24 -right-24 h-[520px] w-[520px] rounded-full bg-[color:var(--mitto-primary-100)] blur-3xl opacity-80" />
-          <div className="atlys-blob blob-2 absolute -bottom-28 -left-24 h-[520px] w-[520px] rounded-full bg-[color:var(--mitto-accent-100)] blur-3xl opacity-70" />
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-[var(--mitto-gray-50)]" />
+          <div className="atlys-blob absolute -top-24 -right-24 h-[600px] w-[600px] rounded-full bg-[color:var(--mitto-primary-100)] blur-3xl opacity-60" />
+          <div className="atlys-blob blob-2 absolute -bottom-28 -left-24 h-[600px] w-[600px] rounded-full bg-[color:var(--mitto-accent-100)] blur-3xl opacity-50" />
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 pt-14 pb-10 md:pt-20 md:pb-12">
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+        <div className="mx-auto max-w-7xl px-6 pt-20 pb-16 md:pt-32 md:pb-24">
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
             {/* Left */}
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 px-3 py-2 atlys-chip shadow-sm">
@@ -339,8 +358,8 @@ export default function HomePage(): JSX.Element {
       </section>
 
       {/* TRUSTED BY (scrolling marquee like the referenced site) */}
-      <section aria-label="Trusted by professionals" className="bg-[var(--mitto-gray-50)]">
-        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
+      <section aria-label="Trusted by professionals" className="bg-white border-y border-[var(--mitto-gray-100)]">
+        <div className="mx-auto max-w-7xl px-6 py-12">
           <p className="text-center text-sm font-semibold text-[var(--mitto-gray-700)]">
             Trusted by professionals working at
           </p>
@@ -363,9 +382,9 @@ export default function HomePage(): JSX.Element {
       {/* SERVICES */}
       <Section
         id="services"
-        eyebrow="Services"
-        title="All mobility needs — in one platform."
-        subtitle="Choose a service and jump to its dedicated page."
+        eyebrow="Our Expertise"
+        title="One platform. Infinite possibilities."
+        subtitle="From student visas to corporate relocation, we've built a ecosystem that handles the complexity for you."
         tone="violet"
       >
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -392,6 +411,37 @@ export default function HomePage(): JSX.Element {
               </div>
             </Link>
           ))}
+        </div>
+      </Section>
+
+      {/* PROCESS SECTION (New) */}
+      <Section
+        id="process"
+        eyebrow="How it works"
+        title="Your journey, simplified."
+        subtitle="We've distilled years of mobility expertise into a 4-step process that guarantees results."
+      >
+        <div className="grid gap-12 md:grid-cols-4">
+          <ProcessStep 
+            number="01" 
+            title="Free Roadmap" 
+            desc="Share your goals and get a customized eligibility report and document checklist." 
+          />
+          <ProcessStep 
+            number="02" 
+            title="Expert Match" 
+            desc="Get paired with a dedicated mobility consultant who specializes in your specific route." 
+          />
+          <ProcessStep 
+            number="03" 
+            title="Digital Filing" 
+            desc="Upload documents to our secure vault. We handle translations, legal checks, and submission." 
+          />
+          <ProcessStep 
+            number="04" 
+            title="Landing Support" 
+            desc="From visa grant to local orientation, we ensure you're settled and compliant." 
+          />
         </div>
       </Section>
 
